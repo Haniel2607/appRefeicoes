@@ -1,7 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Alert, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { Firebase } from "../firebase";
 
 export default function Login({ navigation }) {
+
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+
+    function dados(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+    }
+
+    function logar() {
+        Firebase.auth().signInWithEmailAndPassword(email, senha)
+            .then(() => {
+                if (user) {
+                    alert("Usuário não existe.");
+                    return;
+                }
+                navigation.navigate('Rotas', { email })
+            })
+            .catch((error) => {
+                alert(error);
+                navigation.navigate('Login');
+            })
+    }
 
     return (
         <View style={estilo.container}>

@@ -21,7 +21,7 @@ export default function Login({ navigation }) {
                     alert("Usuário não existe.");
                     return;
                 }
-                navigation.navigate('Rotas', { email })
+                navigation.navigate('Home', { email })
             })
             .catch((error) => {
                 alert(error);
@@ -29,11 +29,26 @@ export default function Login({ navigation }) {
             })
     }
 
+    useEffect(() => {
+        Firebase.auth().onAuthStateChanged(function (user) {
+            const uid = user.uid;
+            const email = user.email;
+        });
+    }, []);
+
+    if (user) {
+        return navigation.navigate('Home');
+    } else {
+
+    }
+
     return (
         <View style={estilo.container}>
             <Text style={estilo.titulo}> Login </Text>
-            <TextInput style={estilo.input} placeholder="Digite o email" />
-            <TextInput style={estilo.input} placeholder="Digite a senha" />
+            <TextInput style={estilo.input} onChangeText={(email) => setEmail(email)} value={email}
+                placeholder="Digite o email" />
+            <TextInput style={estilo.input} secureTextEntry={true} onChangeText={(senha) => setSenha(senha)}
+                value={senha} placeholder="Digite a senha" />
 
             <TouchableOpacity style={estilo.botaoLogar}>
                 <Text style={estilo.textoBotaoLogar}> Entrar </Text>

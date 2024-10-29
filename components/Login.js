@@ -20,7 +20,6 @@ export default function Login({ navigation }) {
         signInWithEmailAndPassword(auth, email, senha)
             .then(() => {
                 if (!user) {
-                    alert("Usuário não existe.");
                     return;
                 }
                 navigation.navigate('Home', { email });
